@@ -1,0 +1,12 @@
+<article class="product-card">
+    <a class="product-image {{ product.flavor }}" href="{{ url_for('catalog.product', slug=product.slug) }}">{% set flavor = product.flavor %}{% include 'components/cupcake.html' %}</a>
+    <div class="product-info">
+        <h3><a href="{{ url_for('catalog.product', slug=product.slug) }}">{{ product.name }}</a></h3>
+        <p>{{ product.description }}</p>
+        <div class="product-bottom"><strong>{{ product.price|brl }}</strong><a href="{{ url_for('catalog.product', slug=product.slug) }}">Ver detalhes ↗</a></div>
+        <form method="post" action="{{ url_for('cart.add', product_id=product.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="button add-button" type="submit" aria-label="Adicionar {{ product.name }} ao carrinho">Adicionar ao carrinho +</button>
+        </form>
+    </div>
+</article>

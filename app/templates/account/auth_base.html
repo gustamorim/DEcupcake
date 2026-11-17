@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="container auth-layout">
+    <div class="auth-intro">
+        <p class="eyebrow">MINHA CONTA</p>
+        <h1>Sua conta<br><em>na DEcupcake.</em></h1>
+        <p>Entre ou cadastre-se para fazer e consultar seus pedidos.</p>
+        <div class="auth-illustration" aria-hidden="true">{% set flavor = 'morango' %}{% include 'components/cupcake.html' %}</div>
+    </div>
+    <div class="auth-card">{% block form_content %}{% endblock %}</div>
+</section>
+{% endblock %}

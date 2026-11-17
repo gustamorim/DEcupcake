@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="DEcupcake: conheça os sabores, adicione ao carrinho e faça seu pedido.">
+    <title>{% block title %}DEcupcake | Cupcakes{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/shop.css') }}">
+    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+</head>
+<body>
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+    <div class="announcement">Conheça os sabores da DEcupcake.</div>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="brand" href="{{ url_for('home.index') }}" aria-label="DEcupcake, início">DE<span class="brand-light">cupcake</span></a>
+            <button class="menu-toggle" type="button" aria-controls="main-nav" aria-expanded="false">Menu</button>
+            <nav id="main-nav" class="navigation" aria-label="Menu principal">
+                <a href="{{ url_for('home.index') }}" {% if request.endpoint == 'home.index' %}aria-current="page"{% endif %}>Início</a>
+                <a href="{{ url_for('catalog.index') }}" {% if request.blueprint == 'catalog' %}aria-current="page"{% endif %}>Catálogo</a>
+                <a href="{{ url_for('orders.index') }}" {% if request.blueprint == 'orders' %}aria-current="page"{% endif %}>Pedidos</a>
+                <a href="{{ url_for('account.index') }}" {% if request.blueprint == 'account' %}aria-current="page"{% endif %}>Minha conta</a>
+                <a class="cart-link" href="{{ url_for('cart.index') }}" {% if request.blueprint == 'cart' %}aria-current="page"{% endif %}>Carrinho</a>
+            </nav>
+        </div>
+    </header>
+    <main id="conteudo">
+        {% for category, message in get_flashed_messages(with_categories=true) %}<div class="container flash-message" role="status">{{ message }}</div>{% endfor %}
+        {% block content %}{% endblock %}
+    </main>
+    <footer class="site-footer">
+        <div class="container footer-inner"><a class="brand" href="{{ url_for('home.index') }}">DE<span class="brand-light">cupcake</span></a><p>Cupcakes para saborear.</p><span>Loja em desenvolvimento</span></div>
+    </footer>
+</body>
+</html>

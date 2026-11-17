@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}Catálogo | DEcupcake{% endblock %}
+{% block content %}
+<section class="container shop-page">
+    <p class="eyebrow">CUPCAKES</p><h1>Catálogo</h1>
+    <p class="muted">Escolha entre os cinco sabores e adicione ao carrinho.</p>
+    <div class="product-grid">{% for product in products %}{% include 'components/product_card.html' %}{% else %}<p>Novos sabores em breve.</p>{% endfor %}</div>
+</section>
+{% endblock %}

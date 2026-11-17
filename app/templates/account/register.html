@@ -1,0 +1,19 @@
+{% extends 'account/auth_base.html' %}
+{% block title %}Criar conta | DEcupcake{% endblock %}
+{% block form_content %}
+<h2>Criar conta</h2><p class="muted">Preencha seus dados.</p>
+{% if errors %}<p class="form-error" role="alert">Confira os campos abaixo para continuar.</p>{% endif %}
+<form class="auth-form" method="post" action="{{ url_for('account.register') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    {% for field, label, type, autocomplete, limit in [('name', 'Nome', 'text', 'name', 100), ('email', 'E-mail', 'email', 'email', 254), ('password', 'Senha', 'password', 'new-password', 128), ('password_confirmation', 'Confirme a senha', 'password', 'new-password', 128)] %}
+    <div class="form-field">
+        <label for="{{ field }}">{{ label }}</label>
+        <input id="{{ field }}" name="{{ field }}" type="{{ type }}" autocomplete="{{ autocomplete }}" maxlength="{{ limit }}" {% if type == 'password' %}minlength="8"{% elif field == 'name' %}minlength="2"{% endif %} value="{{ values.get(field, '') }}" required {% if errors.get(field) %}aria-invalid="true" aria-describedby="{{ field }}-error"{% elif field == 'password' %}aria-describedby="password-help"{% endif %}>
+        {% if field == 'password' %}<small id="password-help">Use de 8 a 128 caracteres.</small>{% endif %}
+        {% if errors.get(field) %}<small class="form-error" id="{{ field }}-error">{{ errors[field] }}</small>{% endif %}
+    </div>
+    {% endfor %}
+    <button class="button" type="submit">Criar minha conta <span aria-hidden="true">→</span></button>
+</form>
+<p class="auth-switch">Já tem uma conta? <a class="text-link" href="{{ url_for('account.login') }}">Entrar</a></p>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Meus pedidos | DEcupcake{% endblock %}
+{% block content %}
+<section class="container shop-page">
+    <p class="eyebrow">HISTÓRICO</p><h1>Meus pedidos</h1>
+    {% for order in orders %}
+    <article class="order-card">
+        <div class="order-heading"><div><h2>Pedido #{{ order.id }}</h2><p class="muted">Criado em {{ order.created_at_local.strftime('%d/%m/%Y às %H:%M') }} (Brasília)</p></div><span class="order-status">Recebido</span></div>
+        <div class="table-scroll"><table class="order-table"><caption class="sr-only">Itens do pedido {{ order.id }}</caption><thead><tr><th scope="col">Cupcake</th><th scope="col">Quantidade</th><th scope="col">Unidade</th><th scope="col">Subtotal</th></tr></thead><tbody>
+            {% for item in order.items %}<tr><th scope="row">{{ item.product_name }}</th><td>{{ item.quantity }}</td><td>{{ item.unit_price|brl }}</td><td>{{ item.subtotal|brl }}</td></tr>{% endfor %}
+        </tbody></table></div>
+        <div class="order-footer"><strong>Total: {{ order.total|brl }}</strong><form class="delete-order-form" method="post" action="{{ url_for('orders.delete', order_id=order.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="text-button" type="submit">Excluir pedido #{{ order.id }}</button></form></div>
+    </article>
+    {% else %}<div class="empty-state"><h2>Você ainda não tem pedidos.</h2><p>Finalize uma compra para ver seu pedido aqui.</p><a class="button" href="{{ url_for('catalog.index') }}">Ver catálogo →</a></div>{% endfor %}
+</section>
+{% endblock %}

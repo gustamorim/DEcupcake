@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Minha conta | DEcupcake{% endblock %}
+{% block content %}
+<section class="container account-page">
+    <p class="eyebrow">MINHA CONTA</p>
+    <h1>Olá, {{ g.user.name }}!</h1>
+    <p>Consulte seus dados e pedidos.</p>
+    <dl class="account-data"><dt>Nome</dt><dd>{{ g.user.name }}</dd><dt>E-mail</dt><dd>{{ g.user.email }}</dd></dl>
+    <div class="account-actions">
+        <a class="button" href="{{ url_for('catalog.index') }}">Ver sabores →</a>
+        <a class="text-link" href="{{ url_for('orders.index') }}">Meus pedidos</a>
+        <form method="post" action="{{ url_for('account.logout') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="text-button" type="submit">Sair da conta</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

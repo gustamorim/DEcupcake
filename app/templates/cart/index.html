@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Carrinho | DEcupcake{% endblock %}
+{% block content %}
+<section class="container shop-page">
+    <p class="eyebrow">SEUS PRODUTOS</p><h1>Meu carrinho</h1>
+    {% if rows %}
+    <div class="cart-layout"><div class="cart-items">
+        {% for row in rows %}
+        <article class="cart-item">
+            <div class="product-image cart-art {{ row.product.flavor }}">{% set flavor = row.product.flavor %}{% include 'components/cupcake.html' %}</div>
+            <div class="cart-item-info"><h2><a href="{{ url_for('catalog.product', slug=row.product.slug) }}">{{ row.product.name }}</a></h2><p>{{ row.product.price|brl }} / unidade</p>
+                <form class="quantity-form" method="post" action="{{ url_for('cart.update', product_id=row.product.id) }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <label for="quantity-{{ row.product.id }}">Quantidade</label><input class="quantity-input" id="quantity-{{ row.product.id }}" name="quantity" type="number" min="1" max="99" value="{{ row.quantity }}" required>
+                    <button class="text-button" type="submit">Atualizar</button>
+                </form>
+                <form method="post" action="{{ url_for('cart.remove', product_id=row.product.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="text-button" type="submit" aria-label="Remover {{ row.product.name }}">Remover</button></form>
+            </div><strong>{{ row.subtotal|brl }}</strong>
+        </article>
+        {% endfor %}
+    </div><aside class="cart-summary"><h2>Resumo</h2><p class="total-line"><span>Total</span><strong>{{ total|brl }}</strong></p>
+        {% if g.user %}
+        <form method="post" action="{{ url_for('checkout.finalize') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="checkout_key" value="{{ session.checkout_key }}"><button class="button" type="submit">Finalizar compra →</button></form>
+        <p class="muted">Ao finalizar, seu pedido aparecerá em Meus pedidos.</p>
+        {% else %}<p>Entre na sua conta para finalizar a compra. Seus cupcakes continuam no carrinho.</p><a class="button" href="{{ url_for('account.login') }}">Entrar para finalizar →</a>{% endif %}
+        <a class="text-link" href="{{ url_for('catalog.index') }}">Escolher mais sabores</a>
+    </aside></div>
+    {% else %}<div class="empty-state"><h2>Seu carrinho está vazio.</h2><p>Adicione cupcakes pelo catálogo.</p><a class="button" href="{{ url_for('catalog.index') }}">Ver catálogo →</a></div>{% endif %}
+</section>
+{% endblock %}
