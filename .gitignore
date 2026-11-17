@@ -6,3 +6,10 @@ instance/
 .env
 .pytest_cache/
 tests/
+.vercel/
+.env.*
+.tools/
+.neon
+.agents/
+.codex/
+.coodex/
